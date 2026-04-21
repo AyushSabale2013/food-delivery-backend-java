@@ -1,5 +1,6 @@
-UserID: U039 logged in
-UserID: U039 logged in
-UserID: U002 logged in
-UserID: U002 logged in
-UserID: U002 logged in
+[2026-04-21 18:43:59] UserID: U101 logged in
+[2026-04-21 18:44:22] UserID: U102 logged in
+[2026-04-21 18:45:53] UserID: U101 logged in
+[2026-04-21 18:48:13] UserID: U101 logged in
+[2026-04-21 18:50:52] UserID: U102 logged in
+[2026-04-21 18:56:03] UserID: U111 logged in

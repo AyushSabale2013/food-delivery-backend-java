@@ -83,28 +83,42 @@ public class Main {
                             }
 
                             String exitChoice = sc.next();
-                            if (exitChoice.equals("0")) break;
+                            if (exitChoice.equals("0"))
+                                break;
                         }
                         break;
                     }
 
                     case 2: {
-                        System.out.print("Enter Food ID (e.g., F101): ");
-                        String foodId = sc.next();
+                        System.out.println("\nAdd Items (Enter 0 to exit):");
 
-                        boolean found = false;
-
+                        // ✅ show menu only once
                         for (FoodItem item : r1.getMenu()) {
-                            if (item.getItemId().equals(foodId)) {
-                                cartService.addItem(item);
-                                found = true;
+                            System.out.println(item.getItemId() + " - " + item.getName() + " - " + item.getPrice());
+                        }
+
+                        while (true) {
+                            System.out.print("Enter Food ID: ");
+                            String foodId = sc.next();
+
+                            if (foodId.equals("0"))
                                 break;
+
+                            boolean found = false;
+
+                            for (FoodItem item : r1.getMenu()) {
+                                if (item.getItemId().equals(foodId)) {
+                                    cartService.addItem(item);
+                                    found = true;
+                                    break;
+                                }
+                            }
+
+                            if (!found) {
+                                System.out.println("Invalid Food ID!");
                             }
                         }
 
-                        if (!found) {
-                            System.out.println("Invalid Food ID!");
-                        }
                         break;
                     }
 
