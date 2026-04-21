@@ -1,0 +1,24 @@
+F101,Pizza,200
+F102,Burger,100
+F103,Fries,80
+F104,Pasta,180
+F105,Noodles,150
+F106,Sandwich,90
+F107,Hotdog,120
+F108,Tacos,160
+F109,Paneer Roll,130
+F110,Chicken Roll,140
+F111,Fried Rice,170
+F112,Manchurian,160
+F113,Masala Dosa,110
+F114,Idli,70
+F115,Vada Pav,50
+F116,Pav Bhaji,120
+F117,Chole Bhature,130
+F118,Paratha,100
+F119,Cold Coffee,90
+F120,Lemon Juice,60
+F121,Milkshake,120
+F122,Ice Cream,80
+F123,Brownie,150
+F124,Cake Slice,140
