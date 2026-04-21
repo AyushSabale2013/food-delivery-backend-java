@@ -1,3 +1,11 @@
-U039,ayush,ask,pune
-U002,mauli,bluepink,pune
-U101,ajay,fuckoff,pune
+U101,ayush,123,kolahpur
+U102,rahul,456,mumbai
+U103,rohit,789,pune
+U104,karan,111,thane
+U105,amit,222,nashik
+U106,neha,333,delhi
+U107,priya,444,kolkata
+U108,sneha,555,bangalore
+U109,vikas,666,jaipur
+U110,arjun,777,hyderabad
+U111,mauli,324,ahemdabad
