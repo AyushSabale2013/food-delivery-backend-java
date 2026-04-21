@@ -11,7 +11,7 @@ public class Main {
         CartService cartService = new CartService();
         OrderService orderService = new OrderService();
 
-        // 🔹 Load menu from file
+        // Load menu from file
         Restaurant r1 = new Restaurant("Food Hub");
         r1.loadMenuFromFile();
 
@@ -28,10 +28,7 @@ public class Main {
 
                 switch (choice) {
 
-                    case 1:
-                        System.out.print("User ID (U101): ");
-                        String id = sc.next();
-
+                    case 1: {
                         System.out.print("Username: ");
                         String username = sc.next();
 
@@ -41,15 +38,16 @@ public class Main {
                         System.out.print("Address: ");
                         String address = sc.next();
 
-                        userService.register(id, username, password, address);
+                        userService.register(username, password, address);
                         break;
+                    }
 
-                    case 2:
+                    case 2: {
                         System.out.print("User ID: ");
-                        id = sc.next();
+                        String id = sc.next();
 
                         System.out.print("Password: ");
-                        password = sc.next();
+                        String password = sc.next();
 
                         currentUser = userService.login(id, password);
 
@@ -57,6 +55,7 @@ public class Main {
                             System.out.println("Login failed. Try again.");
                         }
                         break;
+                    }
 
                     case 3:
                         System.out.println("Exiting...");
@@ -75,8 +74,7 @@ public class Main {
 
                 switch (choice) {
 
-                    // ✅ VIEW MENU LOOP (stays until exit)
-                    case 1:
+                    case 1: {
                         while (true) {
                             System.out.println("\nMenu (Enter 0 to exit):");
 
@@ -85,13 +83,12 @@ public class Main {
                             }
 
                             String exitChoice = sc.next();
-
                             if (exitChoice.equals("0")) break;
                         }
                         break;
+                    }
 
-                    // ✅ ADD USING FOOD ID
-                    case 2:
+                    case 2: {
                         System.out.print("Enter Food ID (e.g., F101): ");
                         String foodId = sc.next();
 
@@ -109,12 +106,13 @@ public class Main {
                             System.out.println("Invalid Food ID!");
                         }
                         break;
+                    }
 
                     case 3:
                         cartService.viewCart();
                         break;
 
-                    case 4:
+                    case 4: {
                         if (cartService.getCartItems().isEmpty()) {
                             System.out.println("Cart is empty");
                             break;
@@ -124,6 +122,7 @@ public class Main {
                         order.displayOrder();
                         cartService.clearCart();
                         break;
+                    }
 
                     case 5:
                         System.out.println("Logged out!");

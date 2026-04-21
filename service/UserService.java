@@ -8,28 +8,19 @@ public class UserService {
 
     private Map<String, User> users = new HashMap<>();
 
+    // 🔥 static counter for auto ID
+    private static int idCounter = 101;
+
     // 🔹 Constructor → load users from file
     public UserService() {
         loadUsersFromFile();
     }
 
-    // 🔹 Validate ID (U101 format)
-    private boolean isValidId(String userId) {
-        return userId.matches("U\\d{3}");
-    }
+    // 🔹 Register user (NO userId input now)
+    public void register(String username, String password, String address) {
 
-    // 🔹 Register user
-    public void register(String userId, String username, String password, String address) {
-
-        if (!isValidId(userId)) {
-            System.out.println("Invalid ID! Use format like U101");
-            return;
-        }
-
-        if (users.containsKey(userId)) {
-            System.out.println("User ID already exists!");
-            return;
-        }
+        // 🔥 auto-generate ID
+        String userId = "U" + idCounter++;
 
         User newUser = new User(userId, username, password, address);
         users.put(userId, newUser);
@@ -44,9 +35,10 @@ public class UserService {
         }
 
         System.out.println("User registered successfully!");
+        System.out.println("Your User ID is: " + userId);
     }
 
-    // 🔹 Login user
+    // 🔹 Login user (still uses ID)
     public User login(String userId, String password) {
 
         if (!users.containsKey(userId)) {
@@ -70,7 +62,7 @@ public class UserService {
         }
     }
 
-    // 🔹 Load users from file
+    // 🔹 Load users from file + fix counter
     private void loadUsersFromFile() {
         try {
             File file = new File("users.txt");
@@ -78,6 +70,8 @@ public class UserService {
 
             BufferedReader br = new BufferedReader(new FileReader(file));
             String line;
+
+            int maxId = 100; // 🔥 track highest ID
 
             while ((line = br.readLine()) != null) {
                 String[] parts = line.split(",");
@@ -90,9 +84,16 @@ public class UserService {
                 String address = parts[3];
 
                 users.put(userId, new User(userId, username, password, address));
+
+                // 🔥 extract numeric part
+                int num = Integer.parseInt(userId.substring(1));
+                if (num > maxId) maxId = num;
             }
 
             br.close();
+
+            // 🔥 continue ID from last value
+            idCounter = maxId + 1;
 
         } catch (IOException e) {
             System.out.println("Error reading users file");
