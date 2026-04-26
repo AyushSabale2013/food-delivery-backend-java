@@ -16,19 +16,25 @@ public class UserService {
         loadUsersFromFile();
     }
 
-    // 🔹 Register user (NO userId input now)
-    public void register(String username, String password, String address) {
+    // 🔹 Register user
+    public void register(String username, String password, String address, String phone) {
+
+        // 🔥 simple phone validation (optional but good)
+        if (!phone.matches("\\d{10}")) {
+            System.out.println("Invalid phone number! Must be 10 digits.");
+            return;
+        }
 
         // 🔥 auto-generate ID
         String userId = "U" + idCounter++;
 
-        User newUser = new User(userId, username, password, address);
+        User newUser = new User(userId, username, password, address, phone);
         users.put(userId, newUser);
 
-        // Save to file
+        // 🔹 Save to file
         try {
             FileWriter fw = new FileWriter("users.txt", true);
-            fw.write(userId + "," + username + "," + password + "," + address + "\n");
+            fw.write(userId + "," + username + "," + password + "," + address + "," + phone + "\n");
             fw.close();
         } catch (IOException e) {
             System.out.println("Error saving user");
@@ -41,7 +47,7 @@ public class UserService {
                 "NEW USER REGISTERED → UserID: " + userId);
     }
 
-    // 🔹 Login user (still uses ID)
+    // 🔹 Login user
     public User login(String userId, String password) {
 
         if (!users.containsKey(userId)) {
@@ -75,22 +81,24 @@ public class UserService {
             BufferedReader br = new BufferedReader(new FileReader(file));
             String line;
 
-            int maxId = 100; // 🔥 track highest ID
+            int maxId = 100;
 
             while ((line = br.readLine()) != null) {
                 String[] parts = line.split(",");
 
-                if (parts.length < 4)
+                // 🔥 must be 5 now (with phone)
+                if (parts.length < 5)
                     continue;
 
                 String userId = parts[0];
                 String username = parts[1];
                 String password = parts[2];
                 String address = parts[3];
+                String phone = parts[4];
 
-                users.put(userId, new User(userId, username, password, address));
+                users.put(userId, new User(userId, username, password, address, phone));
 
-                // 🔥 extract numeric part
+                // 🔥 update max ID
                 int num = Integer.parseInt(userId.substring(1));
                 if (num > maxId)
                     maxId = num;
@@ -98,7 +106,7 @@ public class UserService {
 
             br.close();
 
-            // 🔥 continue ID from last value
+            // 🔥 continue ID sequence
             idCounter = maxId + 1;
 
         } catch (IOException e) {

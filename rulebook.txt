@@ -1,0 +1,37 @@
+================ FOOD HUB RULEBOOK ================
+
+🔹 1. SYSTEM USAGE (HOW TO USE)
+
+
+1. Register using username, password, and address.
+2. Login using your User ID and password.
+3. View menu to see available food items.
+4. Add items to cart using Food ID.
+5. Enter 0 while adding items to exit the add-to-cart process.   
+6. Remove items using Food ID if needed.
+7. View cart before placing order.
+8. Place order to confirm your cart.
+9. Logout to end your session.
+
+--------------------------------------------------
+
+🔹 2. ORDER & CART RULES
+
+1. Orders once placed cannot be modified.
+2. Orders can be cancelled only before confirmation.
+3. Cart is temporary and cleared after order placement.
+4. Items in cart are not reserved until order is placed.
+5. Multiple quantities can be added by repeating selection.
+
+--------------------------------------------------
+
+🔹 3. HOTEL / SERVICE RULES
+
+1. Food items are subject to availability.
+2. Prices are fixed and non-negotiable.
+3. Delivery is assumed instant (simulation).
+4. This system does not handle real payments.
+5. Service is limited to a single restaurant (Food Hub).
+
+
+==================================================

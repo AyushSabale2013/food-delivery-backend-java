@@ -1,4 +1,2 @@
 add some more features
-  2) view rulebook
-  3) login history must include logout and also regitered new user activities
-  4) 
+  1) when i do place my order it must as location (where to place order)
