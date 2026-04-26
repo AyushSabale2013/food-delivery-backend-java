@@ -25,18 +25,19 @@ public class Main {
                 System.out.println("\n1. Register\n2. Login\n3. Exit");
 
                 int choice = sc.nextInt();
+                sc.nextLine(); // 🔥 clear buffer
 
                 switch (choice) {
 
                     case 1: {
                         System.out.print("Username: ");
-                        String username = sc.next();
+                        String username = sc.nextLine();
 
                         System.out.print("Password: ");
-                        String password = sc.next();
+                        String password = sc.nextLine();
 
                         System.out.print("Address: ");
-                        String address = sc.next();
+                        String address = sc.nextLine();
 
                         userService.register(username, password, address);
                         break;
@@ -44,10 +45,10 @@ public class Main {
 
                     case 2: {
                         System.out.print("User ID: ");
-                        String id = sc.next();
+                        String id = sc.nextLine();
 
                         System.out.print("Password: ");
-                        String password = sc.next();
+                        String password = sc.nextLine();
 
                         currentUser = userService.login(id, password);
 
@@ -68,12 +69,14 @@ public class Main {
 
             // 🔹 SHOPPING LOOP
             while (currentUser != null) {
-                System.out.println("\n1.View Menu\n2.Add to Cart\n3.View Cart\n4.Place Order\n5.Logout");
+                System.out.println("\n1.View Menu\n2.Add to Cart\n3.Remove Item\n4.View Cart\n5.Place Order\n6.Logout");
 
                 int choice = sc.nextInt();
+                sc.nextLine(); // clear buffer
 
                 switch (choice) {
 
+                    // 🔹 VIEW MENU
                     case 1: {
                         while (true) {
                             System.out.println("\nMenu (Enter 0 to exit):");
@@ -82,24 +85,24 @@ public class Main {
                                 System.out.println(item.getItemId() + " - " + item.getName() + " - " + item.getPrice());
                             }
 
-                            String exitChoice = sc.next();
+                            String exitChoice = sc.nextLine();
                             if (exitChoice.equals("0"))
                                 break;
                         }
                         break;
                     }
 
+                    // 🔹 ADD TO CART
                     case 2: {
                         System.out.println("\nAdd Items (Enter 0 to exit):");
 
-                        // ✅ show menu only once
                         for (FoodItem item : r1.getMenu()) {
                             System.out.println(item.getItemId() + " - " + item.getName() + " - " + item.getPrice());
                         }
 
                         while (true) {
                             System.out.print("Enter Food ID: ");
-                            String foodId = sc.next();
+                            String foodId = sc.nextLine();
 
                             if (foodId.equals("0"))
                                 break;
@@ -107,7 +110,7 @@ public class Main {
                             boolean found = false;
 
                             for (FoodItem item : r1.getMenu()) {
-                                if (item.getItemId().equals(foodId)) {
+                                if (item.getItemId().equalsIgnoreCase(foodId)) { // ✅ improved
                                     cartService.addItem(item);
                                     found = true;
                                     break;
@@ -118,27 +121,41 @@ public class Main {
                                 System.out.println("Invalid Food ID!");
                             }
                         }
-
                         break;
                     }
 
-                    case 3:
+                    // 🔹 REMOVE ITEM (NEW FEATURE)
+                    case 3: {
+                        System.out.print("Enter Food ID to remove: ");
+                        String foodId = sc.nextLine();
+
+                        cartService.removeItemById(foodId);
+                        break;
+                    }
+
+                    // 🔹 VIEW CART
+                    case 4:
                         cartService.viewCart();
                         break;
 
-                    case 4: {
+                    // 🔹 PLACE ORDER
+                    case 5: {
                         if (cartService.getCartItems().isEmpty()) {
                             System.out.println("Cart is empty");
                             break;
                         }
 
-                        Order order = orderService.placeOrder(cartService.getCartItems());
+                        Order order = orderService.placeOrder(
+                                cartService.getCartItems(),
+                                currentUser.getUserId());
+
                         order.displayOrder();
                         cartService.clearCart();
                         break;
                     }
 
-                    case 5:
+                    // 🔹 LOGOUT
+                    case 6:
                         System.out.println("Logged out!");
                         currentUser = null;
                         break;

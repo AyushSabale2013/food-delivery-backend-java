@@ -36,6 +36,9 @@ public class UserService {
 
         System.out.println("User registered successfully!");
         System.out.println("Your User ID is: " + userId);
+
+        FileLogger.log("login_history.txt",
+                "NEW USER REGISTERED → UserID: " + userId);
     }
 
     // 🔹 Login user (still uses ID)
@@ -51,7 +54,7 @@ public class UserService {
         if (user.getPassword().equals(password)) {
 
             FileLogger.log("login_history.txt",
-                "UserID: " + userId + " logged in");
+                    "LOGIN → UserID: " + userId);
 
             System.out.println("Login successful!");
             return user;
@@ -66,7 +69,8 @@ public class UserService {
     private void loadUsersFromFile() {
         try {
             File file = new File("users.txt");
-            if (!file.exists()) return;
+            if (!file.exists())
+                return;
 
             BufferedReader br = new BufferedReader(new FileReader(file));
             String line;
@@ -76,7 +80,8 @@ public class UserService {
             while ((line = br.readLine()) != null) {
                 String[] parts = line.split(",");
 
-                if (parts.length < 4) continue;
+                if (parts.length < 4)
+                    continue;
 
                 String userId = parts[0];
                 String username = parts[1];
@@ -87,7 +92,8 @@ public class UserService {
 
                 // 🔥 extract numeric part
                 int num = Integer.parseInt(userId.substring(1));
-                if (num > maxId) maxId = num;
+                if (num > maxId)
+                    maxId = num;
             }
 
             br.close();

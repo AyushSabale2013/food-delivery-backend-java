@@ -7,13 +7,14 @@ public class OrderService {
 
     private List<Order> orders = new ArrayList<>();
 
-    public Order placeOrder(List<FoodItem> items) {
+    public Order placeOrder(List<FoodItem> items, String userId) {
         Order order = new Order(items);
         orders.add(order);
 
         FileLogger.log("orders.txt",
-            "OrderID: " + order.getOrderId() +
-            " | Total: " + order.getTotal());
+                "UserID: " + userId +
+                        " | OrderID: " + order.getOrderId() +
+                        " | Total: " + order.getTotal());
 
         System.out.println("Order placed successfully!");
         return order;

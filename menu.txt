@@ -22,3 +22,27 @@ F121,Milkshake,120
 F122,Ice Cream,80
 F123,Brownie,150
 F124,Cake Slice,140
+F125,Cheese Pizza,250
+F126,Double Burger,180
+F127,Loaded Fries,120
+F128,White Sauce Pasta,200
+F129,Hakka Noodles,170
+F130,Grilled Sandwich,120
+F131,Chicken Hotdog,150
+F132,Nachos,140
+F133,Paneer Tikka,180
+F134,Chicken Wings,220
+F135,Jeera Rice,130
+F136,Chilli Paneer,170
+F137,Plain Dosa,90
+F138,Rava Idli,80
+F139,Misal Pav,100
+F140,Extra Pav Bhaji,150
+F141,Rajma Chawal,140
+F142,Aloo Paratha,110
+F143,Chocolate Shake,140
+F144,Orange Juice,70
+F145,Strawberry Shake,150
+F146,Vanilla Ice Cream,90
+F147,Chocolate Brownie,170
+F148,Pastry,130
