@@ -5,8 +5,8 @@ public class FoodItem {
     private String name;
     private double price;
 
-    public FoodItem(String itemId, String name, double price) {
-        this.itemId = itemId;
+    public FoodItem(String id, String name, double price) {
+        this.itemId = id;
         this.name = name;
         this.price = price;
     }

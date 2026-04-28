@@ -1,7 +1,6 @@
 package service;
 
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -11,15 +10,17 @@ public class FileLogger {
         try {
             FileWriter fw = new FileWriter(fileName, true);
 
-            // 🔥 current time
+            // 🔥 formatted readable time
             LocalDateTime now = LocalDateTime.now();
 
-            // 🔥 format
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            DateTimeFormatter formatter =
+                    DateTimeFormatter.ofPattern("dd MMM yyyy, hh:mm a");
 
-            String timestamp = "[" + now.format(formatter) + "] ";
+            String time = now.format(formatter);
 
-            fw.write(timestamp + data + "\n");
+            // 🔥 final log format
+            fw.write("[" + time + "] " + data + "\n");
+
             fw.close();
 
         } catch (IOException e) {

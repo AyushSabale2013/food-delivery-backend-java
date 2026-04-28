@@ -4,7 +4,7 @@ import java.util.*;
 
 public class Main {
 
-    // 🔹 RULEBOOK METHOD
+    // 🔹 RULEBOOK
     static void showRulebook() {
         try {
             java.io.BufferedReader br = new java.io.BufferedReader(
@@ -28,181 +28,199 @@ public class Main {
 
         Scanner sc = new Scanner(System.in);
 
-        UserService userService = new UserService();
-        CartService cartService = new CartService();
-        OrderService orderService = new OrderService();
+        UserService us = new UserService();
+        CartService cs = new CartService();
+        OrderService os = new OrderService();
 
-        // 🔹 Load menu
-        Restaurant r1 = new Restaurant("Food Hub");
-        r1.loadMenuFromFile();
+        Restaurant r = new Restaurant();
+        r.loadMenuFromFile();
 
-        if (r1.getMenu().isEmpty()) {
-            System.out.println("Menu not loaded properly!");
-        }
+        User current = null;
 
-        User currentUser = null;
-
-        // 🔁 OUTER LOOP
         while (true) {
 
             // 🔹 AUTH LOOP
-            while (currentUser == null) {
+            while (current == null) {
 
                 System.out.println("\n1. Register\n2. Login\n3. View Rulebook\n4. Exit");
 
                 int choice = sc.nextInt();
-                sc.nextLine(); // clear buffer
+                sc.nextLine();
 
                 switch (choice) {
 
-                    // 🔹 REGISTER
                     case 1: {
                         System.out.print("Username: ");
-                        String username = sc.nextLine();
+                        String name = sc.nextLine();
 
                         System.out.print("Password: ");
-                        String password = sc.nextLine();
+                        String pass = sc.nextLine();
 
                         System.out.print("Address: ");
-                        String address = sc.nextLine();
+                        String addr = sc.nextLine();
 
-                        System.out.print("Phone Number: ");
+                        System.out.print("Phone: ");
                         String phone = sc.nextLine();
 
-                        userService.register(username, password, address, phone);
+                        us.register(name, pass, addr, phone);
                         break;
                     }
 
-                    // 🔹 LOGIN
                     case 2: {
                         System.out.print("User ID: ");
                         String id = sc.nextLine();
 
                         System.out.print("Password: ");
-                        String password = sc.nextLine();
+                        String pass = sc.nextLine();
 
-                        currentUser = userService.login(id, password);
+                        current = us.login(id, pass);
 
-                        if (currentUser == null) {
-                            System.out.println("Login failed. Try again.");
+                        if (current == null) {
+                            System.out.println("Login failed!");
                         }
                         break;
                     }
 
-                    // 🔹 RULEBOOK
                     case 3:
                         showRulebook();
                         break;
 
-                    // 🔹 EXIT
                     case 4:
                         System.out.println("Exiting...");
-                        System.exit(0);
+                        sc.close();
+                        return;
 
                     default:
                         System.out.println("Invalid choice!");
                 }
             }
 
-            // 🔹 SHOPPING LOOP
-            while (currentUser != null) {
+            // 🔹 MAIN MENU
+            while (current != null) {
 
                 System.out.println(
-                        "\n1.View Menu\n2.Add to Cart\n3.Remove Item\n4.View Cart\n5.Place Order\n6.Logout");
+                        "\n--- MAIN MENU ---\n" +
+                                "1. View Menu\n" +
+                                "2. Add to Cart\n" +
+                                "3. Remove Item\n" +
+                                "4. View Cart\n" +
+                                "5. Place Order\n" +
+                                "6. Logout");
 
-                int choice = sc.nextInt();
-                sc.nextLine(); // clear buffer
+                int ch = sc.nextInt();
+                sc.nextLine();
 
-                switch (choice) {
+                switch (ch) {
 
                     // 🔹 VIEW MENU
-                    case 1: {
-                        while (true) {
-                            System.out.println("\nMenu (Enter 0 to exit):");
-
-                            for (FoodItem item : r1.getMenu()) {
-                                System.out.println(item.getItemId() + " - " + item.getName() + " - " + item.getPrice());
-                            }
-
-                            System.out.print("Enter 0 to exit: ");
-                            String exitChoice = sc.nextLine();
-
-                            if (exitChoice.equals("0"))
-                                break;
+                    case 1:
+                        for (FoodItem f : r.getMenu()) {
+                            System.out.println(f.getItemId() + " - " + f.getName() + " - " + f.getPrice());
                         }
                         break;
-                    }
 
-                    // 🔹 ADD TO CART
+                    // 🔹 ADD TO CART (IMPROVED LOOP)
                     case 2: {
-                        System.out.println("\nAdd Items (Enter 0 to exit):");
 
-                        for (FoodItem item : r1.getMenu()) {
-                            System.out.println(item.getItemId() + " - " + item.getName() + " - " + item.getPrice());
+                        System.out.println("\n--- ADD ITEMS (Enter 0 to exit) ---");
+
+                        for (FoodItem f : r.getMenu()) {
+                            System.out.println(f.getItemId() + " - " + f.getName() + " - " + f.getPrice());
                         }
 
                         while (true) {
-                            System.out.print("Enter Food ID: ");
-                            String foodId = sc.nextLine();
 
-                            if (foodId.equals("0"))
+                            System.out.print("Enter Food ID: ");
+                            String addId = sc.nextLine();
+
+                            if (addId.equals("0")) {
+                                System.out.println("Exiting add mode...");
                                 break;
+                            }
 
                             boolean found = false;
 
-                            for (FoodItem item : r1.getMenu()) {
-                                if (item.getItemId().equalsIgnoreCase(foodId)) {
-                                    cartService.addItem(item);
+                            for (FoodItem f : r.getMenu()) {
+                                if (f.getItemId().equalsIgnoreCase(addId)) {
+                                    cs.addItem(f);
                                     found = true;
                                     break;
                                 }
                             }
 
                             if (!found) {
-                                System.out.println("Invalid Food ID!");
+                                System.out.println("Invalid Food ID! Try again.");
                             }
                         }
+
                         break;
                     }
 
                     // 🔹 REMOVE ITEM
                     case 3: {
-                        System.out.print("Enter Food ID to remove: ");
-                        String foodId = sc.nextLine();
 
-                        cartService.removeItemById(foodId);
+                        if (cs.getCartItems().isEmpty()) {
+                            System.out.println("Cart is empty!");
+                            break;
+                        }
+
+                        System.out.println("\n--- REMOVE ITEMS (Enter 0 to exit) ---");
+
+                        // show cart items
+                        cs.viewCart();
+
+                        while (true) {
+
+                            System.out.print("Enter Food ID to remove: ");
+                            String remId = sc.nextLine();
+
+                            // 🔥 exit condition
+                            if (remId.equals("0")) {
+                                System.out.println("Exiting remove mode...");
+                                break;
+                            }
+
+                            boolean removed = cs.removeItemById(remId);
+
+                            if (!removed) {
+                                System.out.println("Item not found in your cart! Try again.");
+                            }
+                        }
+
                         break;
                     }
 
                     // 🔹 VIEW CART
                     case 4:
-                        cartService.viewCart();
+                        cs.viewCart();
                         break;
 
-                    // 🔹 PLACE ORDER
+                    // 🔹 PLACE ORDER (IMPROVED LOOP)
                     case 5: {
-                        if (cartService.getCartItems().isEmpty()) {
-                            System.out.println("Cart is empty");
+
+                        if (cs.getCartItems().isEmpty()) {
+                            System.out.println("Cart is empty!");
                             break;
                         }
 
                         System.out.print("Enter delivery address: ");
-                        String address = sc.nextLine();
+                        String addr = sc.nextLine();
 
-                        Order order = orderService.placeOrder(
-                                cartService.getCartItems(),
-                                currentUser.getUserId(),
-                                address);
+                        // 🔥 place order only once
+                        Order o = os.placeOrder(cs.getCartItems(), current.getUserId(), addr);
+                        o.displayOrder();
 
-                        order.displayOrder();
-                        cartService.clearCart();
+                        cs.clearCart();
+
+                        System.out.println("Order placed successfully!");
+
                         break;
                     }
 
                     // 🔹 LOGOUT
                     case 6:
                         System.out.println("Logged out!");
-                        currentUser = null;
+                        current = null;
                         break;
 
                     default:

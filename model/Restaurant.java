@@ -4,49 +4,26 @@ import java.util.*;
 import java.io.*;
 
 public class Restaurant {
-    private String name;
-    private List<FoodItem> menu;
 
-    public Restaurant(String name) {
-        this.name = name;
-        this.menu = new ArrayList<>();
-    }
+    private List<FoodItem> menu = new ArrayList<>();
 
     public void loadMenuFromFile() {
         try {
-            File file = new File("menu.txt");
-            if (!file.exists()) {
-                System.out.println("menu.txt not found!");
-                return;
-            }
-
-            BufferedReader br = new BufferedReader(new FileReader(file));
+            BufferedReader br = new BufferedReader(new FileReader("menu.txt"));
             String line;
 
             while ((line = br.readLine()) != null) {
-                String[] parts = line.split(",");
-
-                if (parts.length < 3) continue;
-
-                String id = parts[0];
-                String name = parts[1];
-                double price = Double.parseDouble(parts[2]);
-
-                menu.add(new FoodItem(id, name, price));
+                String[] p = line.split(",");
+                menu.add(new FoodItem(p[0], p[1], Double.parseDouble(p[2])));
             }
 
             br.close();
-
         } catch (Exception e) {
-            System.out.println("Error loading menu file");
+            System.out.println("Menu load error");
         }
     }
 
     public List<FoodItem> getMenu() {
         return menu;
-    }
-
-    public String getName() {
-        return name;
     }
 }

@@ -1,16 +1,4 @@
-U101,ayush,123,kolahpur
-U102,rahul,456,mumbai
-U103,rohit,789,pune
-U104,karan,111,thane
-U105,amit,222,nashik
-U106,neha,333,delhi
-U107,priya,444,kolkata
-U108,sneha,555,bangalore
-U109,vikas,666,jaipur
-U110,arjun,777,hyderabad
-U111,mauli14,pinkblue,ahmedabad
-U112,Ashutosh,1234,pune
-U113,om patil,afk,pune
-U114,Ayush Sabale,1234,pune
-U115,Ajay Mahore,afk,pune
-U101,Bhushan,456,pune,9587654958
+U101,Ayush Sabale,1234567899,pune,asdf
+U102,Ayush Hotkar,1234567890,pune,ask
+U103,Apoorv,1234567899,pune,ask
+U104,Ashutosh Singh,1234567890,pune,askl
