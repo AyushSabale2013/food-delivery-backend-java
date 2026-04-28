@@ -2,29 +2,34 @@ package model;
 
 import java.util.*;
 
-public class Order implements Payable, Trackable {
+public class Order {
 
     private static int counter = 1;
+
     private int orderId;
     private List<FoodItem> items;
     private String address;
     private double total;
 
-    public Order(List<FoodItem> items, String address) {
+    public Order(List<FoodItem> items, String address, User user) {
         this.orderId = counter++;
         this.items = new ArrayList<>(items);
         this.address = address;
-        this.total = calculateTotal();
+        this.total = calculateTotal(user);
     }
 
-    public double calculateTotal() {
+    private double calculateTotal(User user) {
         double sum = 0;
-        for (FoodItem f : items) sum += f.getPrice();
-        return sum;
-    }
 
-    public void trackOrder() {
-        System.out.println("Order " + orderId + " is being prepared...");
+        for (FoodItem f : items) {
+            sum += f.getPrice();
+        }
+
+        if (user instanceof PremiumCustomer) {
+            sum *= 0.7;
+        }
+
+        return sum;
     }
 
     public int getOrderId() { return orderId; }
@@ -35,7 +40,7 @@ public class Order implements Payable, Trackable {
         System.out.println("Address: " + address);
 
         for (FoodItem f : items) {
-            System.out.println(f.getItemId() + " - " + f.getName() + " - " + f.getPrice());
+            System.out.println(f.getName() + " - " + f.getPrice());
         }
 
         System.out.println("Total: " + total);

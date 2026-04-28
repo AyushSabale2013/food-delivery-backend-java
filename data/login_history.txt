@@ -1,0 +1,2 @@
+[29 Apr 2026, 01:52 AM] REGISTER (Customer) → UserID: U101
+[29 Apr 2026, 01:53 AM] LOGIN (PremiumCustomer) → UserID: U101

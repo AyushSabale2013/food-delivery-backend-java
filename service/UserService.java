@@ -9,15 +9,12 @@ public class UserService {
     private Map<String, User> users = new HashMap<>();
     private static int idCounter = 101;
 
-    // 🔹 Constructor
     public UserService() {
         loadUsersFromFile();
     }
 
-    // 🔹 Register user
-    public void register(String username, String password, String address, String phone) {
+    public void register(String username, String password, String address, String phone, boolean isPremium) {
 
-        // 🔥 phone validation
         if (!phone.matches("\\d{10}")) {
             System.out.println("Invalid phone number!");
             return;
@@ -25,56 +22,49 @@ public class UserService {
 
         String userId = "U" + idCounter++;
 
-        // 🔥 OOP (Customer extends User)
-        User newUser = new Customer(userId, username, password, address, phone);
+        User newUser = isPremium
+                ? new PremiumCustomer(userId, username, password, address, phone)
+                : new Customer(userId, username, password, address, phone);
+
         users.put(userId, newUser);
 
-        // 🔥 SAVE in correct format: id,name,phone,address,password
         try {
-            FileWriter fw = new FileWriter("users.txt", true);
-            fw.write(userId + "," + username + "," + phone + "," + address + "," + password + "\n");
+            FileWriter fw = new FileWriter("data/users.txt", true);
+            fw.write(userId + "," + username + "," + phone + "," + address + "," + password + "," + (isPremium ? "P" : "N") + "\n");
             fw.close();
         } catch (IOException e) {
             System.out.println("Error saving user");
         }
 
-        // 🔹 Logging
-        FileLogger.log("login_history.txt",
-                "REGISTER → UserID: " + userId);
+        FileLogger.log("data/login_history.txt",
+                "REGISTER (Customer) → UserID: " + userId);
 
-        System.out.println("Registered successfully!");
-        System.out.println("Your User ID: " + userId);
+        System.out.println("Registered! Your ID: " + userId);
     }
 
-    // 🔹 Login
     public User login(String userId, String password) {
-
-        if (!users.containsKey(userId)) {
-            System.out.println("User not found!");
-            return null;
-        }
 
         User user = users.get(userId);
 
-        if (user.getPassword().equals(password)) {
+        if (user != null && user.getPassword().equals(password)) {
 
-            FileLogger.log("login_history.txt",
-                    "LOGIN → UserID: " + userId);
+            String role = (user instanceof PremiumCustomer) ? "PremiumCustomer" : "Customer";
+
+            FileLogger.log("data/login_history.txt",
+                    "LOGIN (" + role + ") → UserID: " + userId);
 
             System.out.println("Login successful!");
-            user.displayRole(); // 🔥 polymorphism
+            user.displayRole();
             return user;
-
-        } else {
-            System.out.println("Incorrect password!");
-            return null;
         }
+
+        System.out.println("Login failed!");
+        return null;
     }
 
-    // 🔹 Load users from file
     private void loadUsersFromFile() {
         try {
-            File file = new File("users.txt");
+            File file = new File("data/users.txt");
             if (!file.exists()) return;
 
             BufferedReader br = new BufferedReader(new FileReader(file));
@@ -83,28 +73,21 @@ public class UserService {
             int maxId = 100;
 
             while ((line = br.readLine()) != null) {
-                String[] parts = line.split(",");
+                String[] p = line.split(",");
+                if (p.length < 6) continue;
 
-                // 🔥 expect 5 fields
-                if (parts.length < 5) continue;
+                boolean isPremium = p[5].equals("P");
 
-                // 🔥 correct order: id,name,phone,address,password
-                String userId = parts[0];
-                String username = parts[1];
-                String phone = parts[2];
-                String address = parts[3];
-                String password = parts[4];
+                User u = isPremium
+                        ? new PremiumCustomer(p[0], p[1], p[4], p[3], p[2])
+                        : new Customer(p[0], p[1], p[4], p[3], p[2]);
 
-                users.put(userId,
-                        new Customer(userId, username, password, address, phone));
+                users.put(p[0], u);
 
-                int num = Integer.parseInt(userId.substring(1));
+                int num = Integer.parseInt(p[0].substring(1));
                 if (num > maxId) maxId = num;
             }
 
-            br.close();
-
-            // 🔥 continue ID sequence
             idCounter = maxId + 1;
 
         } catch (Exception e) {

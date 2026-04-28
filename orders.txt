@@ -1,5 +1,0 @@
-
-[2026-04-26 13:07:17] UserID: U101 | OrderID: 1 | Address: IIIT PUNE | Total: 490.0
-[2026-04-28 23:38:54] UserID: U102 | OrderID: 1 | Address: PANVEL | Total: 150.0
-2026-04-29T01:02:16.176189349 User: U102 Order: 1 Total: 220.0
-2026-04-29T01:05:23.690891619 User: U103 Order: 1 Total: 360.0

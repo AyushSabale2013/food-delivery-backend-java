@@ -2,38 +2,27 @@ package service;
 
 import model.*;
 import java.util.*;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class OrderService {
 
     private List<Order> orders = new ArrayList<>();
 
-    public Order placeOrder(List<FoodItem> items, String userId, String address) {
+    public Order placeOrder(List<FoodItem> items, User user, String address) {
 
-        Order order = new Order(items, address);
-        orders.add(order);
+        Order o = new Order(items, address, user);
+        orders.add(o);
 
-        // 🔥 Human-readable time
-        LocalDateTime now = LocalDateTime.now();
+        String role = (user instanceof PremiumCustomer) ? "PremiumCustomer" : "Customer";
 
-        DateTimeFormatter formatter =
-                DateTimeFormatter.ofPattern("dd MMM yyyy, hh:mm a");
-
-        String time = now.format(formatter);
-
-        // 🔥 structured log
         String logData =
-                "OrderID: " + order.getOrderId() +
-                " | Time: " + time +
-                " | UserID: " + userId +
+                "OrderID: " + o.getOrderId() +
+                " | Role: " + role +
+                " | UserID: " + user.getUserId() +
                 " | Address: " + address +
-                " | Total: " + order.getTotal();
+                " | Total: " + o.getTotal();
 
-        FileLogger.log("orders.txt", logData);
+        FileLogger.log("data/orders.txt", logData);
 
-        System.out.println("Order placed successfully!");
-
-        return order;
+        return o;
     }
 }

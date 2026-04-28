@@ -9,7 +9,9 @@ public class Restaurant {
 
     public void loadMenuFromFile() {
         try {
-            BufferedReader br = new BufferedReader(new FileReader("menu.txt"));
+            menu.clear(); // 🔥 IMPORTANT: clear old menu
+
+            BufferedReader br = new BufferedReader(new FileReader("data/menu.txt"));
             String line;
 
             while ((line = br.readLine()) != null) {
@@ -18,6 +20,7 @@ public class Restaurant {
             }
 
             br.close();
+
         } catch (Exception e) {
             System.out.println("Menu load error");
         }

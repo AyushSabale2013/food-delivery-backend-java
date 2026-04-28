@@ -10,7 +10,6 @@ public class FileLogger {
         try {
             FileWriter fw = new FileWriter(fileName, true);
 
-            // 🔥 formatted readable time
             LocalDateTime now = LocalDateTime.now();
 
             DateTimeFormatter formatter =
@@ -18,7 +17,6 @@ public class FileLogger {
 
             String time = now.format(formatter);
 
-            // 🔥 final log format
             fw.write("[" + time + "] " + data + "\n");
 
             fw.close();
@@ -27,4 +25,4 @@ public class FileLogger {
             System.out.println("Error writing to file");
         }
     }
-}
+}   
