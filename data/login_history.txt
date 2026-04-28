@@ -1,2 +1,11 @@
 [29 Apr 2026, 01:52 AM] REGISTER (Customer) → UserID: U101
 [29 Apr 2026, 01:53 AM] LOGIN (PremiumCustomer) → UserID: U101
+[29 Apr 2026, 02:02 AM] LOGIN (Admin) → AdminID: A101
+[29 Apr 2026, 02:24 AM] REGISTER (Customer) → UserID: U101
+[29 Apr 2026, 02:27 AM] REGISTER (Customer) → UserID: U129
+[29 Apr 2026, 02:28 AM] REGISTER (Customer) → UserID: U131
+[29 Apr 2026, 02:28 AM] LOGIN (Customer) → UserID: U131
+[29 Apr 2026, 02:32 AM] REGISTER (Customer) → UserID: U132
+[29 Apr 2026, 02:32 AM] LOGIN (PremiumCustomer) → UserID: U132
+[29 Apr 2026, 02:37 AM] REGISTER (Customer) → UserID: U133
+[29 Apr 2026, 05:09 AM] LOGIN (PremiumCustomer) → UserID: U132

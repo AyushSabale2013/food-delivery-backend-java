@@ -43,6 +43,10 @@ F142,Aloo Paratha,110
 F143,Chocolate Shake,140
 F144,Orange Juice,70
 F145,Strawberry Shake,150
-F146,Vanilla Ice Cream,90
-F147,Chocolate Brownie,170
-F148,Pastry,130
+F146,Chocolate Brownie,170
+F147,Pastry,130
+F148,Kaju Katli,160
+F149,Dhokla,60
+F150,Phutane,10
+F151,idle,60.0
+F152,bhel,150.0

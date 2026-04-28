@@ -30,7 +30,8 @@ public class UserService {
 
         try {
             FileWriter fw = new FileWriter("data/users.txt", true);
-            fw.write(userId + "," + username + "," + phone + "," + address + "," + password + "," + (isPremium ? "P" : "N") + "\n");
+            fw.write(userId + "," + username + "," + phone + "," + address + "," + password + ","
+                    + (isPremium ? "P" : "N") + "\n");
             fw.close();
         } catch (IOException e) {
             System.out.println("Error saving user");
@@ -62,10 +63,42 @@ public class UserService {
         return null;
     }
 
+    public boolean removeUser(String uid) {
+        boolean found = false;
+
+        try {
+            List<String> lines = new ArrayList<>();
+            BufferedReader br = new BufferedReader(new FileReader("data/users.txt"));
+            String line;
+
+            while ((line = br.readLine()) != null) {
+                if (line.startsWith(uid + ",")) {
+                    found = true;
+                } else {
+                    lines.add(line);
+                }
+            }
+            br.close();
+
+            if (found) {
+                FileWriter fw = new FileWriter("data/users.txt", false);
+                for (String l : lines)
+                    fw.write(l + "\n");
+                fw.close();
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error removing user!");
+        }
+
+        return found;
+    }
+
     private void loadUsersFromFile() {
         try {
             File file = new File("data/users.txt");
-            if (!file.exists()) return;
+            if (!file.exists())
+                return;
 
             BufferedReader br = new BufferedReader(new FileReader(file));
             String line;
@@ -74,7 +107,8 @@ public class UserService {
 
             while ((line = br.readLine()) != null) {
                 String[] p = line.split(",");
-                if (p.length < 6) continue;
+                if (p.length < 6)
+                    continue;
 
                 boolean isPremium = p[5].equals("P");
 
@@ -85,7 +119,8 @@ public class UserService {
                 users.put(p[0], u);
 
                 int num = Integer.parseInt(p[0].substring(1));
-                if (num > maxId) maxId = num;
+                if (num > maxId)
+                    maxId = num;
             }
 
             idCounter = maxId + 1;

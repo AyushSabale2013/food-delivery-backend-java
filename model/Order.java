@@ -2,7 +2,7 @@ package model;
 
 import java.util.*;
 
-public class Order {
+public class Order implements Payable, Trackable {
 
     private static int counter = 1;
 
@@ -10,15 +10,19 @@ public class Order {
     private List<FoodItem> items;
     private String address;
     private double total;
+    private User user;
 
     public Order(List<FoodItem> items, String address, User user) {
         this.orderId = counter++;
         this.items = new ArrayList<>(items);
         this.address = address;
-        this.total = calculateTotal(user);
+        this.user = user;
+        this.total = calculateTotal(); // 🔥 interface method
     }
 
-    private double calculateTotal(User user) {
+    //  from Payable
+    @Override
+    public double calculateTotal() {
         double sum = 0;
 
         for (FoodItem f : items) {
@@ -30,6 +34,12 @@ public class Order {
         }
 
         return sum;
+    }
+
+    //  from Trackable
+    @Override
+    public void trackOrder() {
+        System.out.println("Order " + orderId + " is being processed...");
     }
 
     public int getOrderId() { return orderId; }

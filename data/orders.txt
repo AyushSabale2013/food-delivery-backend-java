@@ -1,0 +1,3 @@
+[29 Apr 2026, 02:29 AM] OrderID: 1 | Role: Customer | UserID: U131 | Address: iitp bh2 | Total: 670.0
+[29 Apr 2026, 02:33 AM] OrderID: 1 | Role: PremiumCustomer | UserID: U132 | Address: iiit pune | Total: 259.0
+[29 Apr 2026, 05:10 AM] OrderID: 1 | Role: PremiumCustomer | UserID: U132 | Address: iiit pune | Total: 98.0

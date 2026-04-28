@@ -5,35 +5,6 @@ import java.io.*;
 
 public class Main {
 
-    static boolean isAdmin(String id, String pass) {
-        return (id.equals("A101") && pass.equals("admin"));
-    }
-
-    // 🔹 REMOVE FOOD FROM FILE
-    static void removeFood(String id) {
-        try {
-            List<String> lines = new ArrayList<>();
-
-            BufferedReader br = new BufferedReader(new FileReader("data/menu.txt"));
-            String line;
-
-            while ((line = br.readLine()) != null) {
-                if (!line.startsWith(id + ",")) {
-                    lines.add(line);
-                }
-            }
-            br.close();
-
-            FileWriter fw = new FileWriter("data/menu.txt", false);
-            for (String l : lines)
-                fw.write(l + "\n");
-            fw.close();
-
-        } catch (Exception e) {
-            System.out.println("Error removing food!");
-        }
-    }
-
     public static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in);
@@ -51,13 +22,19 @@ public class Main {
             // 🔹 AUTH LOOP
             while (current == null) {
 
-                System.out.println("\n1 Register\n2 Login\n3 Admin Login\n4 Exit");
+                System.out.println("\n1 Register\n2 Login\n3 Admin\n4 Exit");
 
-                int c = sc.nextInt();
-                sc.nextLine();
+                int c;
+                try {
+                    c = Integer.parseInt(sc.nextLine());
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid input! Enter a number.");
+                    continue;
+                }
 
                 switch (c) {
 
+                    // 🔹 REGISTER
                     case 1: {
                         System.out.print("Name: "); String n = sc.nextLine();
                         System.out.print("Pass: "); String p = sc.nextLine();
@@ -71,92 +48,136 @@ public class Main {
                         break;
                     }
 
+                    // 🔹 LOGIN
                     case 2: {
-                        System.out.print("User ID: "); String id = sc.nextLine();
-                        System.out.print("Password: "); String pass = sc.nextLine();
+                        System.out.print("User ID: ");
+                        String id = sc.nextLine();
+
+                        System.out.print("Password: ");
+                        String pass = sc.nextLine();
 
                         current = us.login(id, pass);
-
-                        if (current == null)
-                            System.out.println("Login failed!");
                         break;
                     }
 
+                    // 🔹 ADMIN PANEL
                     case 3: {
                         System.out.print("Admin ID: ");
                         String aid = sc.nextLine();
 
-                        System.out.print("Pass: ");
+                        System.out.print("Password: ");
                         String ap = sc.nextLine();
 
-                        if (isAdmin(aid, ap)) {
+                        String name = AdminService.authenticate(aid, ap);
 
-                            System.out.println("Welcome Admin");
+                        if (name != null) {
+
+                            System.out.println("Welcome Admin: " + name);
 
                             while (true) {
 
-                                System.out.println("\n1 Add Food\n2 Remove Food\n3 Exit");
+                                System.out.println("\n1 Add Food\n2 Add User\n3 Remove User\n4 Exit");
 
-                                int ch = sc.nextInt();
-                                sc.nextLine();
+                                int ch;
+                                try {
+                                    ch = Integer.parseInt(sc.nextLine());
+                                } catch (NumberFormatException e) {
+                                    System.out.println("Invalid choice!");
+                                    continue;
+                                }
 
                                 // 🔹 ADD FOOD
                                 if (ch == 1) {
+
+                                    System.out.println("Enter food details (0 to exit)");
+
                                     while (true) {
 
-                                        System.out.print("Enter item (id,name,price) or 0: ");
-                                        String in = sc.nextLine();
+                                        System.out.print("Food Name: ");
+                                        String fname = sc.nextLine();
 
-                                        if (in.equals("0"))
-                                            break;
+                                        if (fname.equals("0")) break;
 
+                                        double price;
+                                        System.out.print("Price: ");
                                         try {
-                                            FileWriter fw = new FileWriter("data/menu.txt", true);
-                                            fw.write(in + "\n");
-                                            fw.close();
-                                        } catch (Exception e) {
-                                            System.out.println("Error writing to menu file!");
+                                            price = Double.parseDouble(sc.nextLine());
+                                        } catch (NumberFormatException e) {
+                                            System.out.println("Invalid price!");
+                                            continue;
                                         }
+
+                                        String id = FoodService.generateFoodId();
+
+                                        try (BufferedWriter bw = new BufferedWriter(new FileWriter("data/menu.txt", true))) {
+                                            bw.write(id + "," + fname + "," + price);
+                                            bw.newLine();
+                                        } catch (IOException e) {
+                                            System.out.println("Error writing menu file!");
+                                        }
+
+                                        System.out.println("Added: " + id + " - " + fname);
                                     }
 
                                     r.loadMenuFromFile();
-                                    System.out.println("Menu updated!");
                                 }
 
-                                // 🔹 REMOVE FOOD
+                                // 🔹 ADD USER
                                 if (ch == 2) {
+
+                                    System.out.println("Add Users (0 to exit)");
+
                                     while (true) {
 
-                                        System.out.print("Enter Food ID to remove or 0: ");
-                                        String fid = sc.nextLine();
+                                        System.out.print("Name: ");
+                                        String n = sc.nextLine();
+                                        if (n.equals("0")) break;
 
-                                        if (fid.equals("0"))
-                                            break;
+                                        System.out.print("Pass: ");
+                                        String p = sc.nextLine();
 
-                                        removeFood(fid);
+                                        System.out.print("Addr: ");
+                                        String a = sc.nextLine();
+
+                                        System.out.print("Phone: ");
+                                        String ph = sc.nextLine();
+
+                                        System.out.print("Premium? (yes/no): ");
+                                        boolean prem = sc.nextLine().equalsIgnoreCase("yes");
+
+                                        us.register(n, p, a, ph, prem);
                                     }
-
-                                    r.loadMenuFromFile();
-                                    System.out.println("Menu updated!");
                                 }
 
-                                if (ch == 3)
-                                    break;
+                                // 🔹 REMOVE USER
+                                if (ch == 3) {
+
+                                    while (true) {
+
+                                        System.out.print("Enter UserID to remove (0 to exit): ");
+                                        String uid = sc.nextLine();
+
+                                        if (uid.equals("0")) break;
+
+                                        if (us.removeUser(uid))
+                                            System.out.println("User removed!");
+                                        else
+                                            System.out.println("Invalid ID!");
+                                    }
+                                }
+
+                                if (ch == 4) break;
                             }
 
                         } else {
                             System.out.println("Invalid admin credentials");
                         }
-
                         break;
                     }
 
                     case 4:
                         sc.close();
                         return;
-
-                    default:
-                        System.out.println("Invalid choice!");
                 }
             }
 
@@ -165,32 +186,30 @@ public class Main {
 
                 System.out.println("\n1 Menu 2 Add 3 Remove 4 Cart 5 Order 6 Logout");
 
-                int ch = sc.nextInt();
-                sc.nextLine();
+                int ch;
+                try {
+                    ch = Integer.parseInt(sc.nextLine());
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid input!");
+                    continue;
+                }
 
                 switch (ch) {
 
                     // 🔹 VIEW MENU
                     case 1:
-                        for (FoodItem f : r.getMenu()) {
+                        for (FoodItem f : r.getMenu())
                             System.out.println(f.getItemId() + " - " + f.getName() + " - " + f.getPrice());
-                        }
                         break;
 
-                    // 🔥 ADD LOOP
+                    // 🔹 ADD TO CART
                     case 2: {
-                        System.out.println("\n--- ADD ITEMS (Enter 0 to exit) ---");
-
-                        for (FoodItem f : r.getMenu()) {
-                            System.out.println(f.getItemId() + " - " + f.getName() + " - " + f.getPrice());
-                        }
+                        System.out.println("Enter ID (0 to exit)");
 
                         while (true) {
-                            System.out.print("Enter Food ID: ");
                             String id = sc.nextLine();
 
-                            if (id.equals("0"))
-                                break;
+                            if (id.equals("0")) break;
 
                             boolean found = false;
 
@@ -203,57 +222,61 @@ public class Main {
                             }
 
                             if (!found)
-                                System.out.println("Invalid Food ID!");
+                                System.out.println("Invalid ID!");
                         }
                         break;
                     }
 
-                    // 🔥 REMOVE LOOP
+                    // 🔥 REMOVE MODE
                     case 3: {
-                        System.out.println("\n--- REMOVE ITEMS (Enter 0 to exit) ---");
+                        System.out.println("\n--- REMOVE MODE ---");
+                        System.out.println("Only way to exit is enter 0");
 
                         cs.viewCart();
 
                         while (true) {
+
                             System.out.print("Enter Food ID to remove: ");
                             String id = sc.nextLine();
 
-                            if (id.equals("0"))
-                                break;
+                            if (id.equals("0")) break;
 
-                            if (!cs.removeItemById(id)) {
+                            if (cs.removeItemById(id))
+                                System.out.println("Item removed!");
+                            else
                                 System.out.println("Item not in cart!");
-                            }
                         }
                         break;
                     }
 
+                    // 🔹 VIEW CART
                     case 4:
                         cs.viewCart();
                         break;
 
+                    // 🔹 PLACE ORDER
                     case 5: {
                         if (cs.getCartItems().isEmpty()) {
-                            System.out.println("Cart is empty!");
+                            System.out.println("Cart empty!");
                             break;
                         }
 
-                        System.out.print("Enter delivery address: ");
+                        System.out.print("Address: ");
                         String addr = sc.nextLine();
 
                         Order o = os.placeOrder(cs.getCartItems(), current, addr);
-                        o.displayOrder();
+
+                        if (o != null)
+                            o.displayOrder();
 
                         cs.clearCart();
                         break;
                     }
 
+                    // 🔹 LOGOUT
                     case 6:
                         current = null;
                         break;
-
-                    default:
-                        System.out.println("Invalid choice!");
                 }
             }
         }
