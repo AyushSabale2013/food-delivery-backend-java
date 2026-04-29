@@ -8,7 +8,7 @@ public class FoodService {
 
         String last = null;
 
-        // 🔥 try-with-resources (auto close)
+        // try-with-resources (auto close)
         try (BufferedReader br = new BufferedReader(new FileReader("data/menu.txt"))) {
 
             String line;
@@ -32,7 +32,7 @@ public class FoodService {
             return "F101";
         }
 
-        // 🔥 safe handling after reading
+        //  safe handling after reading
         if (last == null) return "F101";
 
         try {

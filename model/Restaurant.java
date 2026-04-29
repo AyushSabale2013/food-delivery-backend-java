@@ -9,7 +9,7 @@ public class Restaurant {
 
     public void loadMenuFromFile() {
         try {
-            menu.clear(); // 🔥 IMPORTANT: clear old menu
+            menu.clear(); 
 
             BufferedReader br = new BufferedReader(new FileReader("data/menu.txt"));
             String line;

@@ -17,7 +17,7 @@ public class Order implements Payable, Trackable {
         this.items = new ArrayList<>(items);
         this.address = address;
         this.user = user;
-        this.total = calculateTotal(); // 🔥 interface method
+        this.total = calculateTotal(); //  interface method
     }
 
     //  from Payable

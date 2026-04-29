@@ -6,7 +6,7 @@ public class AdminService {
 
     public static String authenticate(String id, String pass) {
 
-        // 🔥 try-with-resources (auto close file)
+        //  try-with-resources (auto close file)
         try (BufferedReader br = new BufferedReader(new FileReader("data/admin.txt"))) {
 
             String line;
@@ -24,7 +24,7 @@ public class AdminService {
             }
 
         } 
-        // 🔥 specific exception handling
+        //  specific exception handling
         catch (FileNotFoundException e) {
             System.out.println("Admin file not found!");
         } 

@@ -9,3 +9,9 @@
 [29 Apr 2026, 02:32 AM] LOGIN (PremiumCustomer) → UserID: U132
 [29 Apr 2026, 02:37 AM] REGISTER (Customer) → UserID: U133
 [29 Apr 2026, 05:09 AM] LOGIN (PremiumCustomer) → UserID: U132
+[29 Apr 2026, 01:43 PM] REGISTER (Customer) → UserID: U133
+[29 Apr 2026, 01:45 PM] REGISTER (Customer) → UserID: U141
+[29 Apr 2026, 01:45 PM] LOGIN (PremiumCustomer) → UserID: U141
+[29 Apr 2026, 01:48 PM] LOGIN (PremiumCustomer) → UserID: U141
+[29 Apr 2026, 02:08 PM] REGISTER (Customer) → UserID: U142
+[29 Apr 2026, 02:11 PM] LOGIN (PremiumCustomer) → UserID: U142

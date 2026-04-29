@@ -22,7 +22,7 @@ public class Main {
             // 🔹 AUTH LOOP
             while (current == null) {
 
-                System.out.println("\n1 Register\n2 Login\n3 Admin\n4 Exit");
+                System.out.println("\n1 Register\n2 Login\n3 Admin\n4 View RuleBook\n5 Exit");
 
                 int c;
                 try {
@@ -37,9 +37,9 @@ public class Main {
                     // 🔹 REGISTER
                     case 1: {
                         System.out.print("Name: "); String n = sc.nextLine();
-                        System.out.print("Pass: "); String p = sc.nextLine();
-                        System.out.print("Addr: "); String a = sc.nextLine();
-                        System.out.print("Phone: "); String ph = sc.nextLine();
+                        System.out.print("Password: "); String p = sc.nextLine();
+                        System.out.print("Address: "); String a = sc.nextLine();
+                        System.out.print("Phone no.: "); String ph = sc.nextLine();
 
                         System.out.print("Premium? (yes/no): ");
                         boolean prem = sc.nextLine().equalsIgnoreCase("yes");
@@ -175,7 +175,25 @@ public class Main {
                         break;
                     }
 
-                    case 4:
+                    // 🔹 VIEW RULEBOOK
+                    case 4: {
+                        try (BufferedReader br = new BufferedReader(new FileReader("data/rulebook.txt"))) {
+
+                            String line;
+                            System.out.println("\n--- RULE BOOK ---");
+
+                            while ((line = br.readLine()) != null) {
+                                System.out.println(line);
+                            }
+
+                        } catch (IOException e) {
+                            System.out.println("Error reading rulebook!");
+                        }
+                        break;
+                    }
+
+                    // 🔹 EXIT
+                    case 5:
                         sc.close();
                         return;
                 }
@@ -196,13 +214,11 @@ public class Main {
 
                 switch (ch) {
 
-                    // 🔹 VIEW MENU
                     case 1:
                         for (FoodItem f : r.getMenu())
                             System.out.println(f.getItemId() + " - " + f.getName() + " - " + f.getPrice());
                         break;
 
-                    // 🔹 ADD TO CART
                     case 2: {
                         System.out.println("Enter ID (0 to exit)");
 
@@ -227,7 +243,6 @@ public class Main {
                         break;
                     }
 
-                    // 🔥 REMOVE MODE
                     case 3: {
                         System.out.println("\n--- REMOVE MODE ---");
                         System.out.println("Only way to exit is enter 0");
@@ -249,12 +264,10 @@ public class Main {
                         break;
                     }
 
-                    // 🔹 VIEW CART
                     case 4:
                         cs.viewCart();
                         break;
 
-                    // 🔹 PLACE ORDER
                     case 5: {
                         if (cs.getCartItems().isEmpty()) {
                             System.out.println("Cart empty!");
@@ -273,7 +286,6 @@ public class Main {
                         break;
                     }
 
-                    // 🔹 LOGOUT
                     case 6:
                         current = null;
                         break;
